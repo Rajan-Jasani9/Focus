@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import type { Task } from '../types';
 import { useTaskStore } from '../store/useTaskStore';
-import { Check, Clock, X, Zap } from 'lucide-react';
+import { Check, Clock, X, Zap, Coffee } from 'lucide-react';
 
 export function CurrentFocus({ task }: { task: Task }) {
-  const { updateTask, markTaskDone } = useTaskStore();
+  const { updateTask, markTaskDone, startBreak } = useTaskStore();
   const [showDoneInput, setShowDoneInput] = useState(false);
   const [timeTaken, setTimeTaken] = useState('');
   const [elapsed, setElapsed] = useState(0);
@@ -56,6 +56,13 @@ export function CurrentFocus({ task }: { task: Task }) {
             {task.startedAt && (
               <span>{elapsed}m elapsed</span>
             )}
+            <button 
+              onClick={() => startBreak(5)}
+              className="flex items-center gap-1 hover:text-[var(--color-accent)] transition-colors border border-slate-700 hover:border-[var(--color-accent)]/50 px-2 py-1 rounded"
+              title="Take a 5 minute break"
+            >
+              <Coffee size={14} /> Break
+            </button>
             <button 
               onClick={handlePause}
               className="flex items-center gap-1 hover:text-white transition-colors border border-slate-700 px-2 py-1 rounded"

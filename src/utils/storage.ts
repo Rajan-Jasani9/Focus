@@ -12,6 +12,9 @@ const defaultState: AppState = {
   tasks: [],
   shutdownNote: '',
   pinHash: null,
+  breakEndTime: null,
+  dailyBreakCount: 0,
+  lastBreakDate: new Date().toISOString().split('T')[0],
 };
 
 export const loadData = (): AppState => {

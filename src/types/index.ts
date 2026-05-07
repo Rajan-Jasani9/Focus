@@ -25,4 +25,7 @@ export interface AppState {
   tasks: Task[];
   shutdownNote: string;
   pinHash: string | null;
+  breakEndTime: number | null;
+  dailyBreakCount: number;
+  lastBreakDate: string; // YYYY-MM-DD
 }
