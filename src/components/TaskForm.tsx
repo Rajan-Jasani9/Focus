@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTaskStore } from '../store/useTaskStore';
 import type { EnergyType, TaskState } from '../types';
 import { useSuggestions } from '../hooks/useSuggestions';
-import { PlusCircle, Play } from 'lucide-react';
+import { PlusCircle, Play, Calendar } from 'lucide-react';
 import { cn } from '../utils/cn';
 
 export function TaskForm() {
@@ -17,6 +17,7 @@ export function TaskForm() {
   const [type, setType] = useState('');
   const [energyType, setEnergyType] = useState<EnergyType>('shallow');
   const [pinned, setPinned] = useState(false);
+  const [dueDate, setDueDate] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
@@ -146,6 +147,8 @@ export function TaskForm() {
       return; 
     }
 
+    const parsedDue = dueDate ? new Date(dueDate).getTime() : undefined;
+
     addTask({
       title: finalTitle,
       nextAction: finalNextAction,
@@ -154,6 +157,7 @@ export function TaskForm() {
       energyType,
       state: 'queued' as TaskState,
       pinned,
+      dueDate: parsedDue,
     });
 
     setRawInput('');
@@ -164,6 +168,7 @@ export function TaskForm() {
     setType('');
     setEnergyType('shallow');
     setPinned(false);
+    setDueDate('');
     inputRef.current?.focus();
   };
 
@@ -242,6 +247,18 @@ export function TaskForm() {
                   <option value="admin">Admin</option>
                   <option value="creative">Creative</option>
                 </select>
+              </div>
+
+              <div className="flex-none w-[140px]">
+                <label className="text-[10px] text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                  <Calendar size={10} /> Due Date
+                </label>
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  className="w-full bg-[#0f1115] border border-[var(--color-dark-border)] rounded-md px-2 py-1.5 text-sm text-white focus:outline-none focus:border-[var(--color-accent)] appearance-none"
+                />
               </div>
 
               <div className="flex-none flex items-end pb-1">
