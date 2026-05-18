@@ -5,6 +5,14 @@ import { Coffee, Play } from 'lucide-react';
 export function ShortBreakOverlay() {
   const { breakEndTime, endBreak } = useTaskStore();
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [message, setMessage] = useState('');
+
+  // Pick a new random message each time a break starts
+  useEffect(() => {
+    if (!breakEndTime) return;
+    const idx = Math.floor(Math.random() * SARCASTIC_MESSAGES.length);
+    setMessage(SARCASTIC_MESSAGES[idx]);
+  }, [breakEndTime]);
 
   useEffect(() => {
     if (!breakEndTime) return;
@@ -12,15 +20,15 @@ export function ShortBreakOverlay() {
     const updateTimer = () => {
       const remaining = Math.max(0, breakEndTime - Date.now());
       setTimeLeft(remaining);
-      
+
       if (remaining === 0) {
-        endBreak(); // Auto end when timer reaches 0
+        endBreak();
       }
     };
 
     updateTimer();
     const interval = setInterval(updateTimer, 1000);
-    
+
     return () => clearInterval(interval);
   }, [breakEndTime, endBreak]);
 
@@ -510,10 +518,7 @@ export function ShortBreakOverlay() {
 
 
 
-  const getSarcasticMessage = () => {
-    const idx = Math.floor(Math.random() * SARCASTIC_MESSAGES.length);
-    return SARCASTIC_MESSAGES[idx];
-  };
+
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f1115]/95 backdrop-blur-xl animate-in fade-in duration-500">
@@ -538,7 +543,7 @@ export function ShortBreakOverlay() {
         
         <h2 className="text-2xl font-bold text-white mb-2">Mental Reset</h2>
         <p className="text-slate-400 text-center mb-8">
-          {getSarcasticMessage()}
+          {message}
         </p>
 
         <div className="text-6xl font-mono font-bold text-white mb-12 tracking-tighter">
