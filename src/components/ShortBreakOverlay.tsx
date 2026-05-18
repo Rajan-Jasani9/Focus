@@ -3,7 +3,7 @@ import { useTaskStore } from '../store/useTaskStore';
 import { Coffee, Play } from 'lucide-react';
 
 export function ShortBreakOverlay() {
-  const { breakEndTime, endBreak, dailyBreakCount } = useTaskStore();
+  const { breakEndTime, endBreak } = useTaskStore();
   const [timeLeft, setTimeLeft] = useState<number>(0);
 
   useEffect(() => {
