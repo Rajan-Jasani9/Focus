@@ -2,45 +2,8 @@ import { useEffect, useState } from 'react';
 import { useTaskStore } from '../store/useTaskStore';
 import { Coffee, Play } from 'lucide-react';
 
-export function ShortBreakOverlay() {
-  const { breakEndTime, endBreak } = useTaskStore();
-  const [timeLeft, setTimeLeft] = useState<number>(0);
-  const [message, setMessage] = useState('');
-
-  // Pick a new random message each time a break starts
-  useEffect(() => {
-    if (!breakEndTime) return;
-    const idx = Math.floor(Math.random() * SARCASTIC_MESSAGES.length);
-    setMessage(SARCASTIC_MESSAGES[idx]);
-  }, [breakEndTime]);
-
-  useEffect(() => {
-    if (!breakEndTime) return;
-
-    const updateTimer = () => {
-      const remaining = Math.max(0, breakEndTime - Date.now());
-      setTimeLeft(remaining);
-
-      if (remaining === 0) {
-        endBreak();
-      }
-    };
-
-    updateTimer();
-    const interval = setInterval(updateTimer, 1000);
-
-    return () => clearInterval(interval);
-  }, [breakEndTime, endBreak]);
-
-  if (!breakEndTime || timeLeft <= 0) return null;
-
-  const minutes = Math.floor(timeLeft / 60000);
-  const seconds = Math.floor((timeLeft % 60000) / 1000);
-
-  const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-  const SARCASTIC_MESSAGES = [
-    "Step away from the screen. Let your subconscious do what your conscious clearly won't.",
+const SARCASTIC_MESSAGES = [
+  "Step away from the screen. Let your subconscious do what your conscious clearly won't.",
     "Another break? Bold move for someone with a task list that long.",
     "Three breaks today. Are we doing Pomodoro, or just 'avoiding work' with extra steps?",
     "Four breaks. I'm starting to think 'Focus' was an ironic name choice.",
@@ -71,7 +34,7 @@ export function ShortBreakOverlay() {
     "The app is judging you silently. Well, not silently. Very loudly.",
     "You've mastered the art of strategic avoidance. An underrated skill, honestly.",
     "Another break. The tasks remain. The irony deepens.",
-    "Your energy levels must be fascinating — always too low to work, always enough to rest.",
+    "Your energy levels must be fascinating â€” always too low to work, always enough to rest.",
     "Historians will note you took many breaks before the big breakthrough. Probably.",
     "Every great thinker took breaks. None of them took this many before 2pm.",
     "If 'resting' were a task, you'd be done for the week.",
@@ -84,7 +47,7 @@ export function ShortBreakOverlay() {
     "You're not procrastinating. You're just 'pre-working.' Aggressively.",
     "The tasks are still there. They've been reading your browser history while you were gone.",
     "If breaks were deliverables, you'd be ahead of schedule.",
-    "Your focus is like a browser tab — refreshed often, rarely productive.",
+    "Your focus is like a browser tab â€” refreshed often, rarely productive.",
     "You could've finished that task in the time you've spent looking at this timer.",
     "Mental health matters. But so does that deadline from two weeks ago.",
     "Your break game is elite. Your shipping game is... developing.",
@@ -158,7 +121,7 @@ export function ShortBreakOverlay() {
     "Your laptop screen is getting more breaks than you are.",
     "At some point, this becomes a data point in a case study.",
     "Your daily break count is a personal best. Every single day.",
-    "Taking a break before the work starts — a bold strategy.",
+    "Taking a break before the work starts â€” a bold strategy.",
     "The task said 'next action.' Apparently the next action is this. Again.",
     "If someone tracked your breaks, they'd submit a thesis.",
     "Every break is a small act of rebellion against the backlog.",
@@ -176,7 +139,7 @@ export function ShortBreakOverlay() {
     "The app salutes your commitment to not committing.",
     "You rest with the dedication others reserve for shipping.",
     "If 'taking five' were billable, you'd be rich.",
-    "Break loading… break loaded. Work: still queued.",
+    "Break loadingâ€¦ break loaded. Work: still queued.",
     "Your task titles have started to blur together from neglect.",
     "At this cadence, retirement looks like your current schedule.",
     "The break timer ends. The hesitation begins.",
@@ -322,7 +285,7 @@ export function ShortBreakOverlay() {
     "The tasks have stopped expecting you. They've found peace.",
     "Another moment where the timer counted down and work did not begin.",
     "You've built a break habit that would make a sloth nervous.",
-    "Your next break is already loading. Be honest — you know it.",
+    "Your next break is already loading. Be honest â€” you know it.",
     "You absolute legend of resting. The backlog remains unimpressed.",
     "Another one for the books. The books are full of breaks.",
     "You deserve this break. The tasks don't agree, but here we are.",
@@ -486,7 +449,7 @@ export function ShortBreakOverlay() {
     "You have a remarkable talent for making this look like a system.",
     "Your scope didn't creep. Your breaks did.",
     "Another break. The roadmap says 'Q2.' You say 'Q-whenever-I-get-to-it.'",
-    "You treat tasks like wine — better after some time. Except they're not wine.",
+    "You treat tasks like wine â€” better after some time. Except they're not wine.",
     "Your break cadence is more consistent than your deploy cadence.",
     "Another break. The user is waiting. The task is waiting. The break is not waiting.",
     "You rest like every deadline is aspirational.",
@@ -514,11 +477,44 @@ export function ShortBreakOverlay() {
     "Your task completion rate would make a loading bar embarrassed.",
     "Another break. The sprint board looks the same as this morning. Exactly.",
     "You rest like someone who has already earned it. The math disagrees.",
-  ];
+];
 
+export function ShortBreakOverlay() {
+  const { breakEndTime, endBreak } = useTaskStore();
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+  const [message, setMessage] = useState('');
 
+  // Pick a new random message once each time a break starts
+  useEffect(() => {
+    if (!breakEndTime) return;
+    const idx = Math.floor(Math.random() * SARCASTIC_MESSAGES.length);
+    setMessage(SARCASTIC_MESSAGES[idx]);
+  }, [breakEndTime]);
 
+  useEffect(() => {
+    if (!breakEndTime) return;
 
+    const updateTimer = () => {
+      const remaining = Math.max(0, breakEndTime - Date.now());
+      setTimeLeft(remaining);
+
+      if (remaining === 0) {
+        endBreak();
+      }
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(interval);
+  }, [breakEndTime, endBreak]);
+
+  if (!breakEndTime || timeLeft <= 0) return null;
+
+  const minutes = Math.floor(timeLeft / 60000);
+  const seconds = Math.floor((timeLeft % 60000) / 1000);
+
+  const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0f1115]/95 backdrop-blur-xl animate-in fade-in duration-500">
@@ -534,13 +530,13 @@ export function ShortBreakOverlay() {
               stroke="var(--color-accent)"
               strokeWidth="4"
               strokeDasharray="301.59"
-              strokeDashoffset={301.59 * (1 - timeLeft / (5 * 60000))} // Defaulting scale to 5 min for visual effect, rough approx
+              strokeDashoffset={301.59 * (1 - timeLeft / (5 * 60000))}
               className="transition-all duration-1000 linear"
             />
           </svg>
           <Coffee size={32} className="text-slate-300 relative z-10" />
         </div>
-        
+
         <h2 className="text-2xl font-bold text-white mb-2">Mental Reset</h2>
         <p className="text-slate-400 text-center mb-8">
           {message}
